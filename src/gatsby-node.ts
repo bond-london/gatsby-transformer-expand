@@ -81,7 +81,7 @@ export async function onCreateNode(
   const module = node[moduleField] as any;
 
   if (isString(type) && isPlainObject(module)) {
-    reporter.info(`Got object of ${type}`);
+    reporter.verbose(`Got object of ${type}`);
     const parentNode = getParent(getNode, node, unNest);
     const typeName = upperFirst(camelCase(type + " Doc"));
     const jsonNode: Node = {
