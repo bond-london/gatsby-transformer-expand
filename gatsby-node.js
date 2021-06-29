@@ -13,7 +13,8 @@ function pluginOptionsSchema({
   return Joi.object({
     sourceType: Joi.string().default("DocsJson").description("Source type to get data from"),
     typeField: Joi.string().default("type").description("Field to use to identify the type"),
-    moduleField: Joi.string().default("module").description("Property that contains the data to expose")
+    moduleField: Joi.string().default("module").description("Property that contains the data to expose"),
+    unNest: Joi.number().default(1).description("Number of levels to traverse up to get the the parent")
   });
 }
 
@@ -26,6 +27,22 @@ function unstable_shouldOnCreateNode({
   return node.internal.type === sourceType;
 }
 
+function getParent(getNode, node, unNest) {
+  const parent = node.parent;
+
+  if (!parent) {
+    return node;
+  }
+
+  const parentNode = getNode(parent);
+
+  if (unNest <= 1) {
+    return parentNode;
+  }
+
+  return getParent(getNode, parentNode, unNest - 1);
+}
+
 async function onCreateNode(args, pluginOptions) {
   const {
     node,
@@ -33,14 +50,15 @@ async function onCreateNode(args, pluginOptions) {
       createNode,
       createParentChildLink
     },
+    getNode,
     createNodeId,
     createContentDigest,
     reporter
   } = args;
   const {
-    sourceType,
     typeField,
-    moduleField
+    moduleField,
+    unNest
   } = pluginOptions;
 
   if (!unstable_shouldOnCreateNode({
@@ -54,10 +72,11 @@ async function onCreateNode(args, pluginOptions) {
 
   if ((0, _lodash.isString)(type) && (0, _lodash.isPlainObject)(module)) {
     reporter.info(`Got object of ${type}`);
+    const parentNode = getParent(getNode, node, unNest);
     const typeName = (0, _lodash.upperFirst)((0, _lodash.camelCase)(type + " Doc"));
     const jsonNode = { ...module,
-      id: createNodeId(`${node.id} ${type}`),
-      parent: node.id,
+      id: createNodeId(`${parentNode.id} ${type}`),
+      parent: parentNode.id,
       children: [],
       internal: {
         contentDigest: createContentDigest(module),
@@ -67,7 +86,7 @@ async function onCreateNode(args, pluginOptions) {
     };
     createNode(jsonNode);
     createParentChildLink({
-      parent: node,
+      parent: parentNode,
       child: jsonNode
     });
   } else {
