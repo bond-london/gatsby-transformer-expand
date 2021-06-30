@@ -71,7 +71,7 @@ async function onCreateNode(args, pluginOptions) {
   const module = node[moduleField];
 
   if ((0, _lodash.isString)(type) && (0, _lodash.isPlainObject)(module)) {
-    reporter.info(`Got object of ${type}`);
+    reporter.verbose(`Got object of ${type}`);
     const parentNode = getParent(getNode, node, unNest);
     const typeName = (0, _lodash.upperFirst)((0, _lodash.camelCase)(type + " Doc"));
     const jsonNode = { ...module,
@@ -84,6 +84,23 @@ async function onCreateNode(args, pluginOptions) {
         owner: ""
       }
     };
+
+    if (parentNode.internal.type === "File") {
+      const {
+        relativePath,
+        relativeDirectory,
+        name,
+        ext,
+        extension
+      } = parentNode;
+      jsonNode.fileInformation = {
+        relativeDirectory,
+        name,
+        ext,
+        extension
+      };
+    }
+
     createNode(jsonNode);
     createParentChildLink({
       parent: parentNode,

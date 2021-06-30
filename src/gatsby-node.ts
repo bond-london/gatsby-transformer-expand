@@ -95,6 +95,16 @@ export async function onCreateNode(
         owner: "",
       },
     };
+    if (parentNode.internal.type === "File") {
+      const { relativePath, relativeDirectory, name, ext, extension } =
+        parentNode;
+      jsonNode.fileInformation = {
+        relativeDirectory,
+        name,
+        ext,
+        extension,
+      };
+    }
     createNode(jsonNode);
     createParentChildLink({ parent: parentNode, child: jsonNode });
   } else {
