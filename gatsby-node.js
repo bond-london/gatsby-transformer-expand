@@ -1,9 +1,9 @@
 "use strict";
 
 exports.__esModule = true;
+exports.onCreateNode = onCreateNode;
 exports.pluginOptionsSchema = pluginOptionsSchema;
 exports.unstable_shouldOnCreateNode = unstable_shouldOnCreateNode;
-exports.onCreateNode = onCreateNode;
 
 var _lodash = require("lodash");
 

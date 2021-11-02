@@ -1,23 +1,26 @@
 {
   "name": "@bond-london/gatsby-transformer-expand",
   "description": "Expand objects",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "author": "Nick Randell <nick.randell@bond.fi>",
   "bugs": {
     "url": "https://github.com/bond-london/gatsby-transformer-expand/issues"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
-    "@babel/preset-typescript": "^7.13.0",
-    "@babel/runtime": "^7.12.5",
-    "@types/lodash": "^4.14.168",
-    "babel-preset-gatsby-package": "^1.5.0-next.0",
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@babel/runtime": "^7.16.0",
+    "@types/lodash": "^4.14.176",
+    "babel-preset-gatsby-package": "^2.1.0",
     "cross-env": "^7.0.3",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.24.0",
-    "gatsby": "^3.4.2"
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.26.1",
+    "gatsby": "^4.1.0"
+  },
+  "peerDependencies": {
+    "gatsby": "^3.0.0||^4.0.0"
   },
   "homepage": "https://github.com/bond-london/gatsby-transformer-expand#readme",
   "keywords": [
